@@ -14,7 +14,7 @@
    <string>PyMassenger</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="button">
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -27,7 +27,7 @@
      <string>Отправить</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit1">
+   <widget class="QLineEdit" name="username">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -37,7 +37,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit2">
+   <widget class="QLineEdit" name="message">
     <property name="geometry">
      <rect>
       <x>10</x>
