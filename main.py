@@ -5,6 +5,7 @@ import requests
 
 
 from PyQt6 import uic, QtCore, QtGui, QtWidgets
+from urllib3.exceptions import HTTPError
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -31,10 +32,40 @@ class MainWindow(QtWidgets.QMainWindow):
         r = requests.post(url, json=data)
         # print(r.status_code, r.reason)
 
+    def GetMessage(self, id):
+        id = str(id)
+        url = self.ServerAddress + "/api/Messanger/" + id
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+        except HTTPError as http_err:
+            print("Н")
+            return None
+        except Exception as err:
+            return None
+        else:
+            text = response.text
+            return text
+
+    def timerEvent(self, msg):
+        msg = self.GetMessage(self.MessageID)
+        if msg is not None:
+            msg = json.loads(msg)
+            UserName = msg["UserName"]
+            MessageText = msg["MessageText"]
+            TimeStamp = msg["TimeStamp"]
+            msgtext = f"{TimeStamp} : <{UserName}> : {MessageText}"
+            #self.listMessages.insertItem(self.messageID, msgtext)
+            self.MessageID += 1
+            msg = self.GetMessage(self.MessageID)
 
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     w = MainWindow()
     w.show()
+    timer = QtCore.QTimer()
+    time = QtCore.QTime(0, 0, 0)
+    timer.timeout.connect(w.timerEvent)
+    timer.start(5000)
     sys.exit(app.exec())
